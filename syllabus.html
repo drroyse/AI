@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIT 270 Course Dashboard | SKYCTC</title>
+    <style>
+        :root {
+            --skyctc-navy: #003366;
+            --skyctc-gold: #FFCC00;
+            --skyctc-blue-light: #0056b3;
+            --bg-gray: #f8f9fa;
+            --text-dark: #1a1a1a;
+            --error-red: #d32f2f;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            background-color: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Print-specific Styles */
+        @media print {
+            .no-print, nav, button, .progress-section, .skip-link {
+                display: none !important;
+            }
+            body { background-color: white; }
+            .main-container { box-shadow: none; margin: 0; width: 100%; }
+            th { background-color: #eee !important; color: black !important; border: 1px solid #000; }
+            td { border: 1px solid #000; }
+            input[type="checkbox"] { display: none; }
+        }
+
+        /* Accessibility: Skip to Content */
+        .skip-link {
+            position: absolute;
+            left: -10000px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+        .skip-link:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            background: var(--skyctc-gold);
+            color: var(--skyctc-navy);
+            padding: 10px;
+            z-index: 100;
+        }
+
+        header {
+            background-color: var(--skyctc-navy);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-bottom: 5px solid var(--skyctc-gold);
+        }
+
+        nav {
+            background: #eee;
+            padding: 10px 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .nav-links { display: flex; gap: 20px; }
+
+        nav a {
+            color: var(--skyctc-navy);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .print-btn {
+            background-color: var(--skyctc-navy);
+            color: white;
+            border: 2px solid var(--skyctc-gold);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .print-btn:hover { background-color: var(--skyctc-blue-light); }
+
+        .main-container {
+            max-width: 1100px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .progress-section {
+            background: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+        }
+
+        progress { width: 100%; height: 25px; accent-color: var(--skyctc-navy); }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+
+        th { background-color: var(--skyctc-navy); color: white; padding: 15px; text-align: left; }
+
+        td { padding: 15px; border-bottom: 2px solid #eee; vertical-align: top; }
+
+        .assignment-group { list-style: none; padding: 0; }
+
+        .assignment-group li { margin-bottom: 8px; display: flex; align-items: flex-start; }
+
+        input[type="checkbox"] { width: 20px; height: 20px; margin-right: 12px; cursor: pointer; }
+
+        .time-est { font-weight: bold; color: var(--skyctc-blue-light); display: block; margin-top: 5px; }
+
+        .holiday-alert { color: var(--error-red); font-weight: bold; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header role="banner">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+                <h1>CIT 270: Spring 2026</h1>
+                <p>Computer Information Technology | SKYCTC</p>
+            </div>
+            <div style="background: white; padding: 10px; border-radius: 4px; color: var(--skyctc-navy); font-weight: 900; border: 2px solid var(--skyctc-gold)">
+                SKYCTC
+            </div>
+        </div>
+    </header>
+
+    <nav aria-label="Course Navigation">
+        <div class="nav-links">
+            <a href="#">Syllabus</a>
+            <a href="#schedule-table">Weekly Schedule</a>
+            <a href="#">Resources</a>
+        </div>
+        <button class="print-btn" onclick="window.print()">Print Schedule to PDF</button>
+    </nav>
+
+    <main id="main-content" class="main-container">
+        <section class="progress-section" aria-labelledby="progress-heading">
+            <h2 id="progress-heading">Your Course Progress</h2>
+            <progress id="course-progress" value="0" max="100"></progress>
+            <p id="progress-text">0 of 62 tasks completed (0%)</p>
+        </section>
+
+        <section id="schedule-table">
+            <table aria-label="Weekly Assignment Schedule">
+                <thead>
+                    <tr>
+                        <th scope="col">Week & Dates</th>
+                        <th scope="col">Assignments (Due Sundays 11:59 PM)</th>
+                        <th scope="col">Workload</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer role="contentinfo" style="text-align: center; padding: 40px; color: #666;">
+        <p>&copy; 2026 Southcentral Kentucky Community and Technical College</p>
+    </footer>
+
+    <script>
+        const schedule = [
+            { w: "Week 1", d: "Jan 12-18", tasks: ["01.1 Course Intro", "01.2 TestOut Lab Simulator", "02.1 Windows Versions", "02.2 Windows Installation", "02.3 Windows Upgrade"], time: 185, note: "" },
+            { w: "Week 2", d: "Jan 19-25", tasks: ["02.4 Hyper-V on Windows Client", "03.1 Windows Activation", "03.2 Configure Windows", "03.3 Web Browser Configuration"], time: 198, note: "College closed 1/19 for holiday" },
+            { w: "Week 3", d: "Jan 26-Feb 1", tasks: ["03.4 Desktop Applications", "03.5 Printers", "03.6 Provisioning Packages", "04.1 System Images"], time: 232, note: "" },
+            { w: "Week 4", d: "Feb 2-8", tasks: ["04.2 User Profile/Data Migration", "04.3 Windows Deployment", "04.4 Use Autopilot", "05.1 Active Directory"], time: 182, note: "" },
+            { w: "Week 5", d: "Feb 9-15", tasks: ["05.2 Users and Group", "05.3 Credential Management", "05.4 Azure AD Users/Groups", "05.5 Privileged Accounts/Certificates"], time: 215, note: "" },
+            { w: "Week 6", d: "Feb 17-22", tasks: ["06.1 Group Policy", "06.2 Password Policies", "06.3 Security Options", "06.4 User Rights Assignment"], time: 219, note: "College Closed on 2/16" },
+            { w: "Week 7", d: "Feb 23-Mar 1", tasks: ["06.5 Audit Policies", "06.6 User Account Control", "07.1 IP Addressing"], time: 201, note: "" },
+            { w: "Week 8", d: "Mar 2-8", tasks: ["07.2 Troubleshoot IP Configuration", "07.3 Troubleshoot Connectivity", "07.4 IP Version 6"], time: 196, note: "" },
+            { w: "Spring Break", d: "Mar 9-15", tasks: ["No assignments - Enjoy your break!"], time: 0, note: "Spring Break" },
+            { w: "Week 9", d: "Mar 16-22", tasks: ["07.5 Wireless Networking", "07.6 VPN", "08.1 Local Storage"], time: 195, note: "" },
+            { w: "Week 10", d: "Mar 23-29", tasks: ["08.2 OneDrive Storage", "08.3 Optimization Local Storage", "08.4 Manage Files and Folders"], time: 160, note: "" },
+            { w: "Week 11", d: "Mar 30-Apr 5", tasks: ["08.5 NTFS/Share Permissions", "09.1 Boot and Startup", "09.2 System Recovery"], time: 240, note: "College closes 11 AM 4/3 (Good Friday)" },
+            { w: "Week 12", d: "Apr 6-12", tasks: ["09.3 System and Data Backup", "09.4 Data Recovery", "09.5 Windows Updates", "09.6 BitLocker"], time: 211, note: "" },
+            { w: "Week 13", d: "Apr 13-19", tasks: ["09.7 Malware Protection", "09.8 Windows Client Firewall", "10.1 Monitor Performance", "10.2 System Configuration Tools"], time: 225, note: "" },
+            { w: "Week 14", d: "Apr 20-26", tasks: ["10.3 Remote Management", "10.4 Remote Desktop/Assistance", "10.5 System Troubleshooting Tools", "11.1 Compliance Policies"], time: 190, note: "" },
+            { w: "Week 15", d: "Apr 27-May 3", tasks: ["11.2 Device Configuration", "12.1-12.4 Device Monitoring/Updates", "13.1-13.2 App Management/Protection"], time: 240, note: "" },
+            { w: "Finals Week", d: "May 4-10", tasks: ["Client Pro Practice Test", "Certification Exam"], time: 240, note: "Plan for 2 hours per exam" }
+        ];
+
+        const tbody = document.getElementById('table-body');
+        schedule.forEach((week, i) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><strong>${week.w}</strong><br>${week.d}<br><span class="holiday-alert">${week.note}</span></td>
+                <td>
+                    <ul class="assignment-group">
+                        ${week.tasks.map((t, ti) => `
+                            <li>
+                                <input type="checkbox" id="check-${i}-${ti}" onchange="calculateProgress()">
+                                <label for="check-${i}-${ti}">${t}</label>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </td>
+                <td><span class="time-est">${week.time > 0 ? week.time + ' mins' : '--'}</span></td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        function calculateProgress() {
+            const total = document.querySelectorAll('input[type="checkbox"]').length;
+            const completed = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const percent = Math.round((completed / total) * 100);
+            document.getElementById('course-progress').value = percent;
+            document.getElementById('progress-text').innerText = `${completed} of ${total} tasks completed (${percent}%)`;
+        }
+    </script>
+</body>
+</html>

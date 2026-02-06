@@ -3,250 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CIT 270 Course Dashboard | SKYCTC</title>
+    <title>CIT 270: M365 Endpoint Administration | SKYCTC</title>
     <style>
         :root {
-            --skyctc-navy: #003366;
-            --skyctc-gold: #FFCC00;
-            --skyctc-blue-light: #0056b3;
-            --bg-gray: #f8f9fa;
-            --text-dark: #1a1a1a;
-            --error-red: #d32f2f;
+            --sky-navy: #003366;
+            --sky-gold: #FFCC00;
+            --sky-blue: #0056b3;
+            --bg-light: #f4f4f4;
+            --text-main: #212529;
+            --alert-red: #cc0000;
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
-            background-color: var(--bg-gray);
-            color: var(--text-dark);
+            background-color: var(--bg-light);
+            color: var(--text-main);
             line-height: 1.6;
         }
 
-        /* Accessibility: Skip to Content */
+        /* ADA Skip Link */
         .skip-link {
             position: absolute;
-            left: -10000px;
-            top: auto;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-        }
-        .skip-link:focus {
-            position: static;
-            width: auto;
-            height: auto;
-            background: var(--skyctc-gold);
-            color: var(--skyctc-navy);
-            padding: 10px;
+            top: -40px;
+            left: 0;
+            background: var(--sky-navy);
+            color: white;
+            padding: 8px;
             z-index: 100;
         }
+        .skip-link:focus { top: 0; }
 
         header {
-            background-color: var(--skyctc-navy);
+            background-color: var(--sky-navy);
             color: white;
-            padding: 1rem 2rem;
-            border-bottom: 5px solid var(--skyctc-gold);
+            padding: 20px;
+            border-bottom: 6px solid var(--sky-gold);
         }
 
         nav {
-            background: #eee;
-            padding: 10px 2rem;
+            background: #fff;
+            padding: 10px 20px;
             display: flex;
-            gap: 20px;
-            border-bottom: 1px solid #ccc;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
 
-        nav a {
-            color: var(--skyctc-navy);
+        .nav-links a {
+            margin-right: 15px;
+            color: var(--sky-navy);
             text-decoration: none;
             font-weight: bold;
         }
 
-        nav a:hover, nav a:focus {
-            text-decoration: underline;
-            outline: 2px solid var(--skyctc-navy);
+        .nav-links a:hover { text-decoration: underline; }
+
+        .btn-print {
+            background-color: var(--sky-navy);
+            color: white;
+            border: 2px solid var(--sky-gold);
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: bold;
         }
 
-        .main-container {
-            max-width: 1100px;
+        .container {
+            max-width: 1000px;
             margin: 20px auto;
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
-        .progress-section {
-            background: #f1f1f1;
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
             padding: 15px;
             border-radius: 5px;
-            margin-bottom: 25px;
         }
 
-        progress {
-            width: 100%;
+        .progress-container {
+            background: #eee;
+            margin: 20px 0;
+            border-radius: 10px;
             height: 25px;
-            accent-color: var(--skyctc-navy);
+        }
+
+        #progress-bar {
+            background: var(--sky-navy);
+            height: 100%;
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.3s;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 20px;
         }
 
-        th {
-            background-color: var(--skyctc-navy);
-            color: white;
-            padding: 15px;
-            text-align: left;
-        }
+        th { background: var(--sky-navy); color: white; padding: 12px; text-align: left; }
 
-        td {
-            padding: 15px;
-            border-bottom: 2px solid #eee;
-            vertical-align: top;
-        }
+        td { padding: 12px; border-bottom: 1px solid #eee; vertical-align: top; }
 
-        .assignment-group {
-            list-style: none;
-            padding: 0;
-        }
+        .assignment-list { list-style: none; padding: 0; }
 
-        .assignment-group li {
-            margin-bottom: 8px;
-            display: flex;
-            align-items: flex-start;
-        }
+        .assignment-item { display: flex; align-items: flex-start; margin-bottom: 8px; }
 
-        input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            margin-right: 12px;
-            cursor: pointer;
-        }
+        input[type="checkbox"] { transform: scale(1.3); margin-right: 10px; cursor: pointer; }
 
-        .time-est {
-            font-weight: bold;
-            color: var(--skyctc-blue-light);
-            display: block;
-            margin-top: 5px;
-        }
+        .note { color: var(--alert-red); font-size: 0.9em; font-weight: bold; }
 
-        .holiday-alert {
-            color: var(--error-red);
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        @media (max-width: 768px) {
-            table, thead, tbody, th, td, tr { display: block; }
-            th { position: absolute; top: -9999px; left: -9999px; }
-            td { border: none; position: relative; padding-left: 10px; }
+        @media print {
+            nav, .progress-section, .btn-print { display: none !important; }
+            .container { box-shadow: none; width: 100%; }
+            th { background: #eee !important; color: black; border: 1px solid #000; }
+            td { border: 1px solid #000; }
         }
     </style>
 </head>
 <body>
 
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <header role="banner">
-        <div style="display: flex; align-items: center; justify-content: space-between;">
-            <div>
-                <h1>CIT 270: Spring 2026</h1>
-                <p>Computer Information Technology | SKYCTC</p>
-            </div>
-            <div style="background: white; padding: 5px; border-radius: 4px; color: var(--skyctc-navy); font-weight: 900; border: 2px solid var(--skyctc-gold)">
-                SKYCTC
-            </div>
+<header>
+    <h1>CIT 270: M365 Endpoint Administration</h1>
+    <p>Spring 2026 | PeopleSoft: 49413 | 3 Credits</p>
+</header>
+
+<nav aria-label="Course Menu">
+    <div class="nav-links">
+        <a href="#instructor">Instructor</a>
+        <a href="#competencies">Competencies</a>
+        <a href="#grading">Grading</a>
+        <a href="#schedule">Schedule</a>
+    </div>
+    <button class="btn-print" onclick="window.print()">Print Syllabus to PDF</button>
+</nav>
+
+<main id="main-content" class="container">
+    <section id="instructor" class="info-grid">
+        <div class="card">
+            <h2>Instructor Information</h2>
+            <p><strong>Dr. Christopher Royse</strong></p>
+            <p>Email: <a href="mailto:chris.royse@kctcs.edu">chris.royse@kctcs.edu</a></p>
+            <p>Office: Main Campus, Bldg A, Room #112</p>
+            <p>Phone: 270-901-1098</p>
         </div>
-    </header>
+        <div class="card">
+            <h2>Required Materials</h2>
+            <p><strong>CompTIA Testout Client Pro 8.0</strong></p>
+            <p>ISBN: 978-1-935080-45-9</p>
+            <p>Access provided via Blackboard all-access program.</p>
+        </div>
+    </section>
 
-    <nav aria-label="Course Navigation">
-        <a href="#">Syllabus</a>
-        <a href="#schedule-table">Weekly Schedule</a>
-        <a href="#">Resources</a>
-        <a href="#">Contact Instructor</a>
-    </nav>
+    <section id="progress-section" class="card" style="margin-bottom: 30px;">
+        <h2>Course Progress Tracker</h2>
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+        <p id="progress-text">0% Completed</p>
+    </section>
 
-    <main id="main-content" class="main-container">
-        <section class="progress-section" aria-labelledby="progress-heading">
-            <h2 id="progress-heading">Your Course Progress</h2>
-            <progress id="course-progress" value="0" max="100"></progress>
-            <p id="progress-text">0 of 62 tasks completed (0%)</p>
-        </section>
+    <section id="grading" class="card">
+        <h2>Grading Policy</h2>
+        <ul>
+            <li>Testout/Labsim Exams (Quizzes): 20%</li>
+            <li>Lab Simulations & Blackboard Assignments: 50%</li>
+            <li>Final Skills Exam: 30%</li>
+        </ul>
+        <p><em>Proctored Exam: NOT Required for this course.</em></p>
+    </section>
 
-        <section id="schedule-table">
-            <table aria-label="Weekly Assignment Schedule">
-                <thead>
-                    <tr>
-                        <th scope="col">Week & Dates</th>
-                        <th scope="col">Assignments (Due Sundays 11:59 PM)</th>
-                        <th scope="col">Workload</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    </tbody>
-            </table>
-        </section>
-    </main>
+    <section id="schedule">
+        <h2>Weekly Schedule</h2>
+        <p>Assignments are due each Sunday @ 11:59 PM (Your Local Time Zone).</p>
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Week & Dates</th>
+                    <th scope="col">Assignments</th>
+                    <th scope="col">Est. Time</th>
+                </tr>
+            </thead>
+            <tbody id="schedule-body">
+                </tbody>
+        </table>
+    </section>
+</main>
 
-    <footer role="contentinfo" style="text-align: center; padding: 40px; color: #666;">
-        <p>&copy; 2026 Southcentral Kentucky Community and Technical College</p>
-    </footer>
+<footer style="text-align: center; padding: 20px; color: #666;">
+    <p>&copy; 2026 Southcentral Kentucky Community and Technical College</p>
+</footer>
 
-    <script>
-        // Data derived from 
-        const schedule = [
-            { w: "Week 1", d: "Jan 12-18", tasks: ["01.1 Course Intro", "01.2 TestOut Lab", "02.1 Windows Versions", "02.2 Installation", "02.3 Upgrade"], time: 185, note: "" },
-            { w: "Week 2", d: "Jan 19-25", tasks: ["02.4 Hyper-V", "03.1 Activation", "03.2 Config Windows", "03.3 Browser Config"], time: 198, note: "Closed 1/19 (MLK Day)" },
-            { w: "Week 3", d: "Jan 26-Feb 1", tasks: ["03.4 Desktop Apps", "03.5 Printers", "03.6 Provisioning", "04.1 System Images"], time: 232, note: "" },
-            { w: "Week 4", d: "Feb 2-8", tasks: ["04.2 User Profile", "04.3 Deployment", "04.4 Autopilot", "05.1 Active Directory"], time: 182, note: "" },
-            { w: "Week 5", d: "Feb 9-15", tasks: ["05.2 Users/Groups", "05.3 Credential Mgmt", "05.4 Azure AD", "05.5 Certificates"], time: 215, note: "" },
-            { w: "Week 6", d: "Feb 17-22", tasks: ["06.1 Group Policy", "06.2 Passwords", "06.3 Security Options", "06.4 User Rights"], time: 219, note: "Closed 2/16" },
-            { w: "Week 7", d: "Feb 23-Mar 1", tasks: ["06.5 Audit Policies", "06.6 UAC", "07.1 IP Addressing"], time: 201, note: "" },
-            { w: "Week 8", d: "Mar 2-8", tasks: ["07.2 IP Troubleshoot", "07.3 Connectivity", "07.4 IPv6"], time: 196, note: "" },
-            { w: "Break", d: "Mar 9-15", tasks: ["Spring Break - No Assignments"], time: 0, note: "Rest Week" },
-            { w: "Week 9", d: "Mar 16-22", tasks: ["07.5 Wireless", "07.6 VPN", "08.1 Local Storage"], time: 195, note: "" },
-            { w: "Week 10", d: "Mar 23-29", tasks: ["08.2 OneDrive", "08.3 Optimization", "08.4 Manage Files"], time: 160, note: "" },
-            { w: "Week 11", d: "Mar 30-Apr 5", tasks: ["08.5 NTFS/Share", "09.1 Boot", "09.2 Recovery"], time: 240, note: "Closed 11AM 4/3" },
-            { w: "Week 12", d: "Apr 6-12", tasks: ["09.3 Backup", "09.4 Data Recovery", "09.5 Updates", "09.6 BitLocker"], time: 211, note: "" },
-            { w: "Week 13", d: "Apr 13-19", tasks: ["09.7 Malware Prot.", "09.8 Firewall", "10.1 Monitor Perf.", "10.2 Config Tools"], time: 225, note: "" },
-            { w: "Week 14", d: "Apr 20-26", tasks: ["10.3 Remote Mgmt", "10.4 Remote Desktop", "10.5 Troubleshooting", "11.1 Compliance"], time: 190, note: "" },
-            { w: "Week 15", d: "Apr 27-May 3", tasks: ["11.2 Device Profiles", "12.1-12.4 Monitoring", "13.1-13.2 Apps"], time: 240, note: "" },
-            { w: "Finals", d: "May 4-10", tasks: ["Client Pro Practice Test", "Certification Exam"], time: 240, note: "2 hrs each" }
-        ];
+<script>
+    const scheduleData = [
+        { w: "Week 1", d: "Jan 12-18", tasks: ["01.1 Course Intro", "01.2 TestOut Lab Simulator", "02.1 Windows Versions", "02.2 Installation", "02.3 Upgrade"], time: 185, note: "" },
+        { w: "Week 2", d: "Jan 19-25", tasks: ["02.4 Hyper-V", "03.1 Windows Activation", "03.2 Configure Windows", "03.3 Web Browser Config"], time: 198, note: "College closed 1/19" },
+        { w: "Week 3", d: "Jan 26-Feb 1", tasks: ["03.4 Desktop Apps", "03.5 Printers", "03.6 Provisioning Packages", "04.1 System Images"], time: 232, note: "" },
+        { w: "Week 4", d: "Feb 2-8", tasks: ["04.2 User Profile/Migration", "04.3 Windows Deployment", "04.4 Autopilot", "05.1 Active Directory"], time: 182, note: "" },
+        { w: "Week 5", d: "Feb 9-15", tasks: ["05.2 Users/Group", "05.3 Credentials", "05.4 Azure AD", "05.5 Privileged Accounts"], time: 215, note: "" },
+        { w: "Week 6", d: "Feb 17-22", tasks: ["06.1 Group Policy", "06.2 Passwords", "06.3 Security", "06.4 User Rights"], time: 219, note: "Closed 2/16" },
+        { w: "Week 7", d: "Feb 23-Mar 1", tasks: ["06.5 Audit Policies", "06.6 UAC", "07.1 IP Addressing"], time: 201, note: "" },
+        { w: "Week 8", d: "Mar 2-8", tasks: ["07.2 IP Troubleshoot", "07.3 Connectivity", "07.4 IPv6"], time: 196, note: "" },
+        { w: "Break", d: "Mar 9-15", tasks: ["Spring Break - No Assignments"], time: 0, note: "Rest Week" },
+        { w: "Week 9", d: "Mar 16-22", tasks: ["07.5 Wireless", "07.6 VPN", "08.1 Local Storage"], time: 195, note: "" },
+        { w: "Week 10", d: "Mar 23-29", tasks: ["08.2 OneDrive", "08.3 Optimization", "08.4 File/Folder Mgmt"], time: 160, note: "" },
+        { w: "Week 11", d: "Mar 30-Apr 5", tasks: ["08.5 NTFS/Share", "09.1 Boot/Startup", "09.2 System Recovery"], time: 240, note: "Closed 11 AM 4/3" },
+        { w: "Week 12", d: "Apr 6-12", tasks: ["09.3 Backup", "09.4 Data Recovery", "09.5 Updates", "09.6 BitLocker"], time: 211, note: "" },
+        { w: "Week 13", d: "Apr 13-19", tasks: ["09.7 Malware Prot.", "09.8 Firewall", "10.1 Monitor Perf.", "10.2 Config Tools"], time: 225, note: "" },
+        { w: "Week 14", d: "Apr 20-26", tasks: ["10.3 Remote Mgmt", "10.4 Remote Desktop", "10.5 Troubleshooting", "11.1 Compliance"], time: 190, note: "" },
+        { w: "Week 15", d: "Apr 27-May 3", tasks: ["11.2 Device Profiles", "12.1-12.4 Monitoring", "13.1-13.2 Apps"], time: 240, note: "" },
+        { w: "Finals", d: "May 4-10", tasks: ["Practice Test", "Certification Exam"], time: 240, note: "2 hrs each" }
+    ];
 
-        const tbody = document.getElementById('table-body');
-        
-        schedule.forEach((week, i) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td><strong>${week.w}</strong><br>${week.d}<br><span class="holiday-alert">${week.note}</span></td>
-                <td>
-                    <ul class="assignment-group">
-                        ${week.tasks.map((t, ti) => `
-                            <li>
-                                <input type="checkbox" id="check-${i}-${ti}" onchange="calculateProgress()">
-                                <label for="check-${i}-${ti}">${t}</label>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </td>
-                <td><span class="time-est">${week.time} mins</span></td>
-            `;
-            tbody.appendChild(row);
-        });
+    const tbody = document.getElementById('schedule-body');
+    scheduleData.forEach((week, i) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><strong>${week.w}</strong><br><small>${week.d}</small><br><span class="note">${week.note}</span></td>
+            <td>
+                <ul class="assignment-list">
+                    ${week.tasks.map((t, ti) => `
+                        <li class="assignment-item">
+                            <input type="checkbox" id="chk-${i}-${ti}" onchange="updateProgress()">
+                            <label for="chk-${i}-${ti}">${t}</label>
+                        </li>
+                    `).join('')}
+                </ul>
+            </td>
+            <td>${week.time > 0 ? week.time + ' mins' : '--'}</td>
+        `;
+        tbody.appendChild(row);
+    });
 
-        function calculateProgress() {
-            const total = document.querySelectorAll('input[type="checkbox"]').length;
-            const completed = document.querySelectorAll('input[type="checkbox"]:checked').length;
-            const percent = Math.round((completed / total) * 100);
-            
-            const bar = document.getElementById('course-progress');
-            bar.value = percent;
-            document.getElementById('progress-text').innerText = `${completed} of ${total} tasks completed (${percent}%)`;
-        }
-    </script>
+    function updateProgress() {
+        const all = document.querySelectorAll('input[type="checkbox"]').length;
+        const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+        const pct = Math.round((checked / all) * 100);
+        document.getElementById('progress-bar').style.width = pct + '%';
+        document.getElementById('progress-text').innerText = pct + '% Completed (' + checked + '/' + all + ' tasks)';
+    }
+</script>
 </body>
 </html>

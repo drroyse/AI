@@ -22,18 +22,6 @@
             line-height: 1.6;
         }
 
-        /* Print-specific Styles */
-        @media print {
-            .no-print, nav, button, .progress-section, .skip-link {
-                display: none !important;
-            }
-            body { background-color: white; }
-            .main-container { box-shadow: none; margin: 0; width: 100%; }
-            th { background-color: #eee !important; color: black !important; border: 1px solid #000; }
-            td { border: 1px solid #000; }
-            input[type="checkbox"] { display: none; }
-        }
-
         /* Accessibility: Skip to Content */
         .skip-link {
             position: absolute;
@@ -56,7 +44,7 @@
         header {
             background-color: var(--skyctc-navy);
             color: white;
-            padding: 1.5rem 2rem;
+            padding: 1rem 2rem;
             border-bottom: 5px solid var(--skyctc-gold);
         }
 
@@ -64,12 +52,9 @@
             background: #eee;
             padding: 10px 2rem;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 20px;
             border-bottom: 1px solid #ccc;
         }
-
-        .nav-links { display: flex; gap: 20px; }
 
         nav a {
             color: var(--skyctc-navy);
@@ -77,17 +62,10 @@
             font-weight: bold;
         }
 
-        .print-btn {
-            background-color: var(--skyctc-navy);
-            color: white;
-            border: 2px solid var(--skyctc-gold);
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
+        nav a:hover, nav a:focus {
+            text-decoration: underline;
+            outline: 2px solid var(--skyctc-navy);
         }
-
-        .print-btn:hover { background-color: var(--skyctc-blue-light); }
 
         .main-container {
             max-width: 1100px;
@@ -105,23 +83,67 @@
             margin-bottom: 25px;
         }
 
-        progress { width: 100%; height: 25px; accent-color: var(--skyctc-navy); }
+        progress {
+            width: 100%;
+            height: 25px;
+            accent-color: var(--skyctc-navy);
+        }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
 
-        th { background-color: var(--skyctc-navy); color: white; padding: 15px; text-align: left; }
+        th {
+            background-color: var(--skyctc-navy);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
 
-        td { padding: 15px; border-bottom: 2px solid #eee; vertical-align: top; }
+        td {
+            padding: 15px;
+            border-bottom: 2px solid #eee;
+            vertical-align: top;
+        }
 
-        .assignment-group { list-style: none; padding: 0; }
+        .assignment-group {
+            list-style: none;
+            padding: 0;
+        }
 
-        .assignment-group li { margin-bottom: 8px; display: flex; align-items: flex-start; }
+        .assignment-group li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+        }
 
-        input[type="checkbox"] { width: 20px; height: 20px; margin-right: 12px; cursor: pointer; }
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
 
-        .time-est { font-weight: bold; color: var(--skyctc-blue-light); display: block; margin-top: 5px; }
+        .time-est {
+            font-weight: bold;
+            color: var(--skyctc-blue-light);
+            display: block;
+            margin-top: 5px;
+        }
 
-        .holiday-alert { color: var(--error-red); font-weight: bold; font-size: 0.9em; }
+        .holiday-alert {
+            color: var(--error-red);
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr { display: block; }
+            th { position: absolute; top: -9999px; left: -9999px; }
+            td { border: none; position: relative; padding-left: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -134,19 +156,17 @@
                 <h1>CIT 270: Spring 2026</h1>
                 <p>Computer Information Technology | SKYCTC</p>
             </div>
-            <div style="background: white; padding: 10px; border-radius: 4px; color: var(--skyctc-navy); font-weight: 900; border: 2px solid var(--skyctc-gold)">
+            <div style="background: white; padding: 5px; border-radius: 4px; color: var(--skyctc-navy); font-weight: 900; border: 2px solid var(--skyctc-gold)">
                 SKYCTC
             </div>
         </div>
     </header>
 
     <nav aria-label="Course Navigation">
-        <div class="nav-links">
-            <a href="#">Syllabus</a>
-            <a href="#schedule-table">Weekly Schedule</a>
-            <a href="#">Resources</a>
-        </div>
-        <button class="print-btn" onclick="window.print()">Print Schedule to PDF</button>
+        <a href="#">Syllabus</a>
+        <a href="#schedule-table">Weekly Schedule</a>
+        <a href="#">Resources</a>
+        <a href="#">Contact Instructor</a>
     </nav>
 
     <main id="main-content" class="main-container">
@@ -176,27 +196,29 @@
     </footer>
 
     <script>
+        // Data derived from 
         const schedule = [
-            { w: "Week 1", d: "Jan 12-18", tasks: ["01.1 Course Intro", "01.2 TestOut Lab Simulator", "02.1 Windows Versions", "02.2 Windows Installation", "02.3 Windows Upgrade"], time: 185, note: "" },
-            { w: "Week 2", d: "Jan 19-25", tasks: ["02.4 Hyper-V on Windows Client", "03.1 Windows Activation", "03.2 Configure Windows", "03.3 Web Browser Configuration"], time: 198, note: "College closed 1/19 for holiday" },
-            { w: "Week 3", d: "Jan 26-Feb 1", tasks: ["03.4 Desktop Applications", "03.5 Printers", "03.6 Provisioning Packages", "04.1 System Images"], time: 232, note: "" },
-            { w: "Week 4", d: "Feb 2-8", tasks: ["04.2 User Profile/Data Migration", "04.3 Windows Deployment", "04.4 Use Autopilot", "05.1 Active Directory"], time: 182, note: "" },
-            { w: "Week 5", d: "Feb 9-15", tasks: ["05.2 Users and Group", "05.3 Credential Management", "05.4 Azure AD Users/Groups", "05.5 Privileged Accounts/Certificates"], time: 215, note: "" },
-            { w: "Week 6", d: "Feb 17-22", tasks: ["06.1 Group Policy", "06.2 Password Policies", "06.3 Security Options", "06.4 User Rights Assignment"], time: 219, note: "College Closed on 2/16" },
-            { w: "Week 7", d: "Feb 23-Mar 1", tasks: ["06.5 Audit Policies", "06.6 User Account Control", "07.1 IP Addressing"], time: 201, note: "" },
-            { w: "Week 8", d: "Mar 2-8", tasks: ["07.2 Troubleshoot IP Configuration", "07.3 Troubleshoot Connectivity", "07.4 IP Version 6"], time: 196, note: "" },
-            { w: "Spring Break", d: "Mar 9-15", tasks: ["No assignments - Enjoy your break!"], time: 0, note: "Spring Break" },
-            { w: "Week 9", d: "Mar 16-22", tasks: ["07.5 Wireless Networking", "07.6 VPN", "08.1 Local Storage"], time: 195, note: "" },
-            { w: "Week 10", d: "Mar 23-29", tasks: ["08.2 OneDrive Storage", "08.3 Optimization Local Storage", "08.4 Manage Files and Folders"], time: 160, note: "" },
-            { w: "Week 11", d: "Mar 30-Apr 5", tasks: ["08.5 NTFS/Share Permissions", "09.1 Boot and Startup", "09.2 System Recovery"], time: 240, note: "College closes 11 AM 4/3 (Good Friday)" },
-            { w: "Week 12", d: "Apr 6-12", tasks: ["09.3 System and Data Backup", "09.4 Data Recovery", "09.5 Windows Updates", "09.6 BitLocker"], time: 211, note: "" },
-            { w: "Week 13", d: "Apr 13-19", tasks: ["09.7 Malware Protection", "09.8 Windows Client Firewall", "10.1 Monitor Performance", "10.2 System Configuration Tools"], time: 225, note: "" },
-            { w: "Week 14", d: "Apr 20-26", tasks: ["10.3 Remote Management", "10.4 Remote Desktop/Assistance", "10.5 System Troubleshooting Tools", "11.1 Compliance Policies"], time: 190, note: "" },
-            { w: "Week 15", d: "Apr 27-May 3", tasks: ["11.2 Device Configuration", "12.1-12.4 Device Monitoring/Updates", "13.1-13.2 App Management/Protection"], time: 240, note: "" },
-            { w: "Finals Week", d: "May 4-10", tasks: ["Client Pro Practice Test", "Certification Exam"], time: 240, note: "Plan for 2 hours per exam" }
+            { w: "Week 1", d: "Jan 12-18", tasks: ["01.1 Course Intro", "01.2 TestOut Lab", "02.1 Windows Versions", "02.2 Installation", "02.3 Upgrade"], time: 185, note: "" },
+            { w: "Week 2", d: "Jan 19-25", tasks: ["02.4 Hyper-V", "03.1 Activation", "03.2 Config Windows", "03.3 Browser Config"], time: 198, note: "Closed 1/19 (MLK Day)" },
+            { w: "Week 3", d: "Jan 26-Feb 1", tasks: ["03.4 Desktop Apps", "03.5 Printers", "03.6 Provisioning", "04.1 System Images"], time: 232, note: "" },
+            { w: "Week 4", d: "Feb 2-8", tasks: ["04.2 User Profile", "04.3 Deployment", "04.4 Autopilot", "05.1 Active Directory"], time: 182, note: "" },
+            { w: "Week 5", d: "Feb 9-15", tasks: ["05.2 Users/Groups", "05.3 Credential Mgmt", "05.4 Azure AD", "05.5 Certificates"], time: 215, note: "" },
+            { w: "Week 6", d: "Feb 17-22", tasks: ["06.1 Group Policy", "06.2 Passwords", "06.3 Security Options", "06.4 User Rights"], time: 219, note: "Closed 2/16" },
+            { w: "Week 7", d: "Feb 23-Mar 1", tasks: ["06.5 Audit Policies", "06.6 UAC", "07.1 IP Addressing"], time: 201, note: "" },
+            { w: "Week 8", d: "Mar 2-8", tasks: ["07.2 IP Troubleshoot", "07.3 Connectivity", "07.4 IPv6"], time: 196, note: "" },
+            { w: "Break", d: "Mar 9-15", tasks: ["Spring Break - No Assignments"], time: 0, note: "Rest Week" },
+            { w: "Week 9", d: "Mar 16-22", tasks: ["07.5 Wireless", "07.6 VPN", "08.1 Local Storage"], time: 195, note: "" },
+            { w: "Week 10", d: "Mar 23-29", tasks: ["08.2 OneDrive", "08.3 Optimization", "08.4 Manage Files"], time: 160, note: "" },
+            { w: "Week 11", d: "Mar 30-Apr 5", tasks: ["08.5 NTFS/Share", "09.1 Boot", "09.2 Recovery"], time: 240, note: "Closed 11AM 4/3" },
+            { w: "Week 12", d: "Apr 6-12", tasks: ["09.3 Backup", "09.4 Data Recovery", "09.5 Updates", "09.6 BitLocker"], time: 211, note: "" },
+            { w: "Week 13", d: "Apr 13-19", tasks: ["09.7 Malware Prot.", "09.8 Firewall", "10.1 Monitor Perf.", "10.2 Config Tools"], time: 225, note: "" },
+            { w: "Week 14", d: "Apr 20-26", tasks: ["10.3 Remote Mgmt", "10.4 Remote Desktop", "10.5 Troubleshooting", "11.1 Compliance"], time: 190, note: "" },
+            { w: "Week 15", d: "Apr 27-May 3", tasks: ["11.2 Device Profiles", "12.1-12.4 Monitoring", "13.1-13.2 Apps"], time: 240, note: "" },
+            { w: "Finals", d: "May 4-10", tasks: ["Client Pro Practice Test", "Certification Exam"], time: 240, note: "2 hrs each" }
         ];
 
         const tbody = document.getElementById('table-body');
+        
         schedule.forEach((week, i) => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -211,7 +233,7 @@
                         `).join('')}
                     </ul>
                 </td>
-                <td><span class="time-est">${week.time > 0 ? week.time + ' mins' : '--'}</span></td>
+                <td><span class="time-est">${week.time} mins</span></td>
             `;
             tbody.appendChild(row);
         });
@@ -220,7 +242,9 @@
             const total = document.querySelectorAll('input[type="checkbox"]').length;
             const completed = document.querySelectorAll('input[type="checkbox"]:checked').length;
             const percent = Math.round((completed / total) * 100);
-            document.getElementById('course-progress').value = percent;
+            
+            const bar = document.getElementById('course-progress');
+            bar.value = percent;
             document.getElementById('progress-text').innerText = `${completed} of ${total} tasks completed (${percent}%)`;
         }
     </script>
